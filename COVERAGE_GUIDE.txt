@@ -1,0 +1,33 @@
+GOOGLETEST COVERAGE GUIDE
+========================
+
+Run from this project directory:
+
+  make clean
+  make test
+  make coverage
+
+The coverage target instruments the application and runs project_tests.cpp.
+It then invokes gcov with --relative-only so GCC standard-library headers
+outside this project directory are excluded from the report. The summary is
+for the eight application .cpp files only (main.cpp, database.cpp, auth.cpp,
+student.cpp, attendance.cpp, fees.cpp, reports.cpp, admin.cpp).
+
+Generated files:
+  coverage_summary.txt  Full gcov output and per-file details
+  *.gcov                Per-line annotated source reports
+  *.gcda / *.gcno       Raw gcov data
+
+To inspect uncovered executable lines in a module:
+  grep -n '#####' student.cpp.gcov
+
+To inspect a report:
+  less student.cpp.gcov
+
+Important:
+- A passing GoogleTest suite does not automatically mean 100% coverage.
+- Line coverage and branch coverage are different metrics.
+- Do not claim 100% unless the application-only report actually shows 100.00%.
+- Cppcheck is run on application source files. GoogleTest macros in the test
+  file can confuse some Cppcheck versions, so the test file is excluded from
+  this static-analysis target; it is still compiled and executed by make test.
